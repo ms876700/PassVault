@@ -5,8 +5,8 @@ const Signup = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL;
-  console.log(API_URL)
+  const API_URL = "https://passvault-9eg9.onrender.com";
+  // console.log(API_URL)
   
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

@@ -28,7 +28,7 @@ const Manager = () => {
   const getPasswords = async () => {
     let req = await fetch(`${API_URL}/api/passwords`, {
       headers: {
-        Authorization: localStorage.getItem("token"),
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     let passwords = await req.json();
@@ -51,7 +51,7 @@ const Manager = () => {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
-              Authorization: localStorage.getItem("token"),
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify(form),
           });
@@ -71,7 +71,7 @@ const Manager = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: localStorage.getItem("token"),
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify(newData),
           });
@@ -100,7 +100,7 @@ const Manager = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ id }),
       });

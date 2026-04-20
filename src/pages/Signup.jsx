@@ -5,13 +5,15 @@ const Signup = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSignup = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

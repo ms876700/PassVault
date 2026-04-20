@@ -49,23 +49,24 @@ const passwordSchema = new mongoose.Schema({
   site: String,
   username: String,
   password: String,
-  userId: mongoose.Schema.Types.ObjectId, // 👈 ADD THIS
+  userId: mongoose.Schema.Types.ObjectId,
 });
 
 const Password = mongoose.model("Password", passwordSchema);
 
 const authMiddleware = (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-    console.log(token);
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader) {
       return res.status(401).json({ message: "No token provided" });
     }
 
+    const token = authHeader.split(" ")[1];
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = decoded; // { id: ... }
+    req.user = decoded;
 
     next();
   } catch (err) {
@@ -112,11 +113,9 @@ app.post("/api/auth/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET, // later move to .env
-      { expiresIn: "1d" },
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.json({ token });
   } catch (err) {
@@ -127,6 +126,8 @@ app.post("/api/auth/login", async (req, res) => {
 // get all documents
 app.get("/api/passwords", authMiddleware, async (req, res) => {
   try {
+    console.log("USER:", req.user);
+
     const data = await Password.find({ userId: req.user.id });
 
     const decryptedData = data.map((item) => {
@@ -148,7 +149,7 @@ app.get("/api/passwords", authMiddleware, async (req, res) => {
 
     res.json(decryptedData);
   } catch (err) {
-    console.error("GET /passwords ERROR:", err);
+    console.error("GET ERROR:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -190,7 +191,7 @@ app.delete("/api/passwords/:id", authMiddleware, async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
-app.listen(3000,"0.0.0.0", () => {
+app.listen(3000, "0.0.0.0", () => {
   console.log(`Example app listening on port 3000`);
 });
 

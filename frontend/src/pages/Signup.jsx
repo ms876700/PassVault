@@ -12,28 +12,30 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSignup = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+ const handleSignup = async (e) => {
+  e.preventDefault(); 
 
-      const data = await res.json();
+  try {
+    const res = await fetch(`${API_URL}/api/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
 
-      if (data.message === "User created successfully") {
-        alert("Signup successful. Please login.");
-        window.location.href = "/login";
-      } else {
-        alert(data.message);
-      }
-    } catch (err) {
-      alert("Error signing up");
+    const data = await res.json();
+
+    if (data.message === "User created successfully") {
+      alert("Signup successful. Please login.");
+      window.location.href = "/login";
+    } else {
+      alert(data.message);
     }
-  };
+  } catch (err) {
+    alert("Error signing up");
+  }
+};
 
   return (
     <div className="flex items-center justify-center h-screen ">

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { RiDeleteBin5Fill, RiEdit2Fill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const Manager = () => {
   const [showPassword, setshowPassword] = useState(false);
@@ -12,15 +13,15 @@ const Manager = () => {
   const [passwordArray, setpasswordArray] = useState([]);
 
   const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token)
 
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
+  if (!token) {
+  navigate("/login");
+}
     getPasswords();
   }, []);
 

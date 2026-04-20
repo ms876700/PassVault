@@ -11,6 +11,8 @@ const Manager = () => {
 
   const [passwordArray, setpasswordArray] = useState([]);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token)
@@ -24,7 +26,7 @@ const Manager = () => {
 
   //getting all passwords
   const getPasswords = async () => {
-    let req = await fetch("http://localhost:3000/api/passwords", {
+    let req = await fetch(`${API_URL}/api/passwords`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -45,7 +47,7 @@ const Manager = () => {
       try {
         //  UPDATE if editing
         if (form.id) {
-          await fetch(`http://localhost:3000/api/passwords/${form.id}`, {
+          await fetch(`${API_URL}/api/passwords/${form.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const Manager = () => {
           const newId = uuidv4();
           const newData = { ...form, id: newId };
 
-          await fetch("http://localhost:3000/api/passwords", {
+          await fetch(`${API_URL}/api/passwords`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -94,7 +96,7 @@ const Manager = () => {
     if (c) {
       setpasswordArray(passwordArray.filter((item) => item.id != id));
 
-      let res = fetch(`http://localhost:3000/api/passwords/${id}`, {
+      let res = fetch(`${API_URL}/api/passwords/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

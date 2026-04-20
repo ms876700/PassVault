@@ -126,18 +126,31 @@ app.post("/api/auth/login", async (req, res) => {
 
 // get all documents
 app.get("/api/passwords", authMiddleware, async (req, res) => {
-  const data = await Password.find({ userId: req.user.id });
+  try {
+    const data = await Password.find({ userId: req.user.id });
 
-  const decryptedData = data.map((item) => {
-    const obj = item.toObject();
+    const decryptedData = data.map((item) => {
+      const obj = item.toObject();
 
-    return {
-      ...obj,
-      password: decrypt(obj.password), // 🔥 MUST decrypt here
-    };
-  });
+      let decryptedPassword = "";
 
-  res.json(decryptedData);
+      try {
+        decryptedPassword = obj.password ? decrypt(obj.password) : "";
+      } catch (err) {
+        console.log("Decrypt error:", err.message);
+      }
+
+      return {
+        ...obj,
+        password: decryptedPassword,
+      };
+    });
+
+    res.json(decryptedData);
+  } catch (err) {
+    console.error("GET /passwords ERROR:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // save a password

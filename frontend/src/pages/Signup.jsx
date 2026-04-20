@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -83,9 +84,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
         <p className="text-center text-sm">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 font-medium hover:font-bold">
-            Login
-          </a>
+          <Link to="/login" className="text-blue-600 font-medium hover:font-bold">
+  Login
+</Link>
         </p>
 
       </div>

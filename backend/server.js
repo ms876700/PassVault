@@ -9,7 +9,7 @@ const crypto = require("crypto");
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "https://pass-vault-plum.vercel.app"
+  origin: "https://pass-vault-three.vercel.app"
 }));
 
 dotenv.config();
